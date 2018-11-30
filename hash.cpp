@@ -10,6 +10,9 @@ bool isprime(int a){
     return true;
 }
 
+int doublehash(int X,int MAXPRIME){
+        return MAXPRIME-(X%MAXPRIME);
+}
 int NextPrime(int a)
 {
     int coun=a+1;
@@ -25,13 +28,13 @@ class HashTable
 {
 public:
 	explicit HashTable( int size = 101 ): array( NextPrime( size ) ){
-		makeEmpty( ); 
+		makeEmpty( );
 	}
-	
-	bool contains( const HashedObj & x ) const{ 
-		return isActive( findPos( x ) ); 
+
+	bool contains( const HashedObj & x ) const{
+		return isActive( findPos( x ) );
 	}
-	
+
 	void makeEmpty( ){
 		currentSize = 0;
 		for( auto & entry : array )
@@ -62,7 +65,7 @@ public:
 		return true;
 	}
 	void print(){
-		for(int i=0;i<currentSize;i++){
+		for(int i=0;i<array.size();i++){
 			cout<<array[i].element<<" ";
 
 		}
@@ -89,7 +92,8 @@ private:
 	bool isActive( int currentPos ) const{
 		return array[ currentPos ].info == ACTIVE;
 	}
-
+    
+	//cuadratic
 	int findPos( const HashedObj & x ) const{
 		int offset = 1;
 		int currentPos = myhash( x );
@@ -105,6 +109,40 @@ private:
 		return currentPos;
 	}
 	
+	/*
+	//linear
+	int findPos( const HashedObj & x ) const{
+
+		int currentPos = myhash( x );
+
+		while( array[ currentPos ].info != EMPTY && array[ currentPos ].element != x )
+		{
+			currentPos++;
+			if( currentPos >= array.size( ) )
+				currentPos -= array.size( );
+		}
+
+		return currentPos;
+	}
+	*/
+
+/*
+	//DOBLE HASHING
+
+//template<typename HashedObj>
+int findPos( const HashedObj & x ) const{
+	int currentPos = myhash( x );
+	int offset = doublehash(currentPos,array.size());
+	if(array[currentPos].element==x)return -1;
+	while(array[currentPos].info!=EMPTY&&array[currentPos].element!=x){
+            currentPos+=offset;
+		if( currentPos >= array.size( ) )
+			currentPos -= array.size( );
+	}
+	return currentPos;
+}
+
+*/
 	void rehash( ){
 		vector<HashEntry> oldArray = array;
 		// Create new double-sized, empty table
@@ -117,23 +155,25 @@ private:
 		for( auto & entry : oldArray )
 			if( entry.info == ACTIVE )
 				insert( std::move( entry.element ) );
+
 	}
 
 	size_t myhash( const HashedObj & x ) const{
 		static hash<HashedObj> hf;
+		cout<<hf( x )%array.size()<<endl;
 		return hf( x ) % array.size( );
 	}
 };
-
+/*
 template <typename Key>
 class hash
 {
 public:
 	size_t operator() ( const Key & k ) const;
 };
-
-
-class hashh
+*/
+template <typename K>
+class hash
 {
 public:
 	size_t operator()( const string & key )
@@ -151,11 +191,11 @@ public:
 	const string & getName( ) const
 	{ return name; }
 
-	bool operator==( const Employee & rhs ) const{ 
+	bool operator==( const Employee & rhs ) const{
 		return getName( ) == rhs.getName( );
 	}
-	
-	bool operator!=( const Employee & rhs ) const{ 
+
+	bool operator!=( const Employee & rhs ) const{
 		return *this != rhs;
 	}
 	// Additional public members not shown
@@ -203,7 +243,18 @@ int main(){
 	a.insert(6);
 	a.insert(7);
 	a.insert(8);
+	a.insert(103);
+	a.insert(209);
+	a.insert(312);
+	a.insert(415);
 	a.print();
-
+	if(a.contains(416)){cout<<"presente"<<endl;}
+	else{cout<<"ausente"<<endl;}
+	
+	HashTable<string> b;
+	b.insert("hola");
+	b.insert("bebe");
+	b.insert("nene");
+	b.print();
 	return 0;
 }
