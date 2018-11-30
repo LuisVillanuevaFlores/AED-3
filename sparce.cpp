@@ -10,12 +10,12 @@ struct nodo
 	nodo(){
 		siguiente=NULL;
 	}
-	
+
 };
 
 class matrizsp
 {
-	nodo *inicio;	
+	nodo *inicio;
 public:
 	matrizsp(){inicio=NULL;}
 	void insertar(int f,int c,int v){
@@ -25,11 +25,23 @@ public:
 			inicio=nuevo;
 			return;
 		}
+		nodo *auxiliar=inicio;
+		while(auxiliar!=NULL){
+            if(auxiliar->fila==f && auxiliar->columna==c ){
+                auxiliar->valor=v;
+                //auxiliar=auxiliar->siguiente;
+                return;
+            }
+            auxiliar=auxiliar->siguiente;
+
+
+
+		}
 		nodo *aux=inicio;
 		while(aux->siguiente!=NULL){
 			aux=aux->siguiente;
 
-		}	
+		}
 		aux->siguiente=nuevo;
 
 	}
@@ -48,14 +60,14 @@ public:
 		while(auxco!=NULL){
 			cout<<auxco->columna<<" ";
 			auxco=auxco->siguiente;
-			
+
 		}
 		cout<<endl;
 		cout<<"VALORES: ";
 		while(auxva!=NULL){
 			cout<<auxva->valor<<" ";
 			auxva=auxva->siguiente;
-			
+
 		}
 		cout<<endl;
 
@@ -80,19 +92,20 @@ public:
 
 
 
-	
+
 };
 
 int main(){
 
 matrizsp M,C;
-int sparseMatric[4][5] = 
-    { 
-        {0 , 0 , 3 , 0 , 4 }, 
-        {0 , 0 , 5 , 7 , 0 }, 
-        {0 , 0 , 0 , 0 , 0 }, 
-        {0 , 2 , 6 , 0 , 0 } 
-    }; 
+
+int sparseMatric[4][5] =
+    {
+        {0 , 0 , 3 , 0 , 4 },
+        {0 , 0 , 5 , 7 , 0 },
+        {0 , 0 , 0 , 0 , 0 },
+        {0 , 2 , 6 , 0 , 0 }
+    };
 
 
 
@@ -112,6 +125,25 @@ int sparseMatric[4][5] =
   cout<<endl;
   C=M.sumar(M,M);
   C.imprimir();
+  cout<<endl;
+M.insertar(0,0,3);
+M.imprimir();
+cout<<endl;
+M.insertar(0,0,5);
+M.imprimir();
+cout<<endl;
+M.insertar(1,3,6);
+M.imprimir();
+  /*
+  M.insertar(0,0,1);
+  M.insertar(0,1,2);
+   M.insertar(0,2,6);
+  M.imprimir();
+  M.insertar(0,0,6);
+   M.insertar(0,1,3);
+  cout<<endl;
+  M.imprimir();
+  */
  return 0;
 
 
