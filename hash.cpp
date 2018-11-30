@@ -1,6 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+template <typename Key>
+class hashh
+{
+public:
+size_t operator() ( const Key & k ) const;
+};
+
+template <>
+class hashh<int>
+{
+public:
+size_t operator()( const int & key )
+{
+return key;}
+};
+
+template <>
+class hashh<string>
+{
+public:
+size_t operator()( const string & key )
+{
+size_t hashVal = 0;
+for( char ch : key )
+hashVal = 37 * hashVal + ch;
+return hashVal;
+}
+};
+
+
+
 bool isprime(int a){
     for(int i=2;i<=sqrt(a);i++){
         if(a%i==0){
@@ -92,7 +123,7 @@ private:
 	bool isActive( int currentPos ) const{
 		return array[ currentPos ].info == ACTIVE;
 	}
-    
+
 	//cuadratic
 	int findPos( const HashedObj & x ) const{
 		int offset = 1;
@@ -108,7 +139,7 @@ private:
 
 		return currentPos;
 	}
-	
+
 	/*
 	//linear
 	int findPos( const HashedObj & x ) const{
@@ -159,31 +190,15 @@ int findPos( const HashedObj & x ) const{
 	}
 
 	size_t myhash( const HashedObj & x ) const{
-		static hash<HashedObj> hf;
+		static hashh<HashedObj> hf;
 		cout<<hf( x )%array.size()<<endl;
 		return hf( x ) % array.size( );
 	}
 };
-/*
-template <typename Key>
-class hash
-{
-public:
-	size_t operator() ( const Key & k ) const;
-};
-*/
-template <typename K>
-class hash
-{
-public:
-	size_t operator()( const string & key )
-	{
-		size_t hashVal = 0;
-		for( char ch : key )
-			hashVal = 37 * hashVal + ch;
-		return hashVal;
-	}
-};
+
+
+
+
 /*
 class Employee
 {
@@ -250,7 +265,7 @@ int main(){
 	a.print();
 	if(a.contains(416)){cout<<"presente"<<endl;}
 	else{cout<<"ausente"<<endl;}
-	
+
 	HashTable<string> b;
 	b.insert("hola");
 	b.insert("bebe");
