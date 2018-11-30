@@ -7,7 +7,7 @@ using namespace std;
 template <typename Comparable>
 class BinaryHeap{
 public:
-	explicit BinaryHeap( int capacity =0 ){currentSize=capacity; }
+	explicit BinaryHeap( int capacity =0 ){currentSize=capacity;array.resize(1); }
 	explicit BinaryHeap( const vector<Comparable> & items ): array( items.size( ) + 10 ), currentSize{ items.size( )}{
 		for( int i = 0; i < items.size( ); ++i )
 			array[ i+1]= items[ i ];
@@ -54,6 +54,7 @@ public:
 		{
 			cout<<array[i]<<" ";
 		}
+		cout<<endl;
 	}
 private:
 	int currentSize; // Number of elements in heap
